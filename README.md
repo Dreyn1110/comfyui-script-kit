@@ -51,8 +51,9 @@ python dsh.py wf --json my_workflow --dry     # convert only, print the API json
 python dsh.py wf --json my_workflow -o out.png
 ```
 
-If `COMFYUI_HOME` is unset, it falls back to `D:\Al\ComfyUI-aki-v3.2` and prints a
-clear error if that doesn't exist.
+If `COMFYUI_HOME` is unset, the scripts try a default install location and stop
+with a clear, actionable error if it doesn't exist — rather than failing later with
+an opaque `FileNotFoundError`.
 
 ---
 
