@@ -1,0 +1,35 @@
+# No model weights, ever. They are large, licensed separately, and not ours to redistribute.
+*.safetensors
+*.ckpt
+*.pt
+*.pth
+*.bin
+*.gguf
+*.onnx
+*.npz
+*.pkl
+
+# Generated output
+*.png
+*.jpg
+*.jpeg
+*.webp
+sample_input/
+output/
+outputs/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+
+# Local config / secrets
+.env
+*.local.json
+
+# OS
+Thumbs.db
+.DS_Store
+desktop.ini

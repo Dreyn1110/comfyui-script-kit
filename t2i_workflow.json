@@ -1,0 +1,47 @@
+{
+  "3": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 20261015,
+      "steps": 25,
+      "cfg": 7.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": ["4", 0],
+      "positive": ["6", 0],
+      "negative": ["7", 0],
+      "latent_image": ["5", 0]
+    }
+  },
+  "4": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": { "ckpt_name": "SD1.5\\v1-5-pruned-emaonly.safetensors" }
+  },
+  "5": {
+    "class_type": "EmptyLatentImage",
+    "inputs": { "width": 512, "height": 512, "batch_size": 1 }
+  },
+  "6": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "a lone red paper lantern floating above a misty mountain lake at dawn, pine forest silhouette, soft volumetric fog, cinematic wide shot, highly detailed, dramatic lighting, masterpiece, best quality",
+      "clip": ["4", 1]
+    }
+  },
+  "7": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "lowres, blurry, watermark, text, signature, jpeg artifacts, ugly, deformed, extra limbs",
+      "clip": ["4", 1]
+    }
+  },
+  "8": {
+    "class_type": "VAEDecode",
+    "inputs": { "samples": ["3", 0], "vae": ["4", 2] }
+  },
+  "9": {
+    "class_type": "SaveImage",
+    "inputs": { "filename_prefix": "dsh_t2i", "images": ["8", 0] }
+  }
+}

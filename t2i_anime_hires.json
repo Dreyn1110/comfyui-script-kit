@@ -1,0 +1,70 @@
+{
+  "1": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": { "ckpt_name": "SD1.5\\v1-5-pruned-emaonly.safetensors" }
+  },
+  "2": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": ["1", 1],
+      "text": "masterpiece, best quality, 1girl, solo, anime portrait, beautiful detailed face, large expressive eyes, long flowing hair, school uniform, cherry blossom petals, soft rim lighting, upper body, looking at viewer, gentle smile, highly detailed, vibrant colors"
+    }
+  },
+  "3": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": ["1", 1],
+      "text": "lowres, worst quality, low quality, bad anatomy, bad hands, extra fingers, missing fingers, extra limbs, deformed, disfigured, mutated, text, watermark, signature, username, jpeg artifacts, blurry, cropped, out of frame"
+    }
+  },
+  "4": {
+    "class_type": "EmptyLatentImage",
+    "inputs": { "width": 512, "height": 512, "batch_size": 1 }
+  },
+  "5": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": ["1", 0],
+      "positive": ["2", 0],
+      "negative": ["3", 0],
+      "latent_image": ["4", 0],
+      "seed": 8817264,
+      "steps": 28,
+      "cfg": 7.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    }
+  },
+  "6": {
+    "class_type": "LatentUpscaleBy",
+    "inputs": {
+      "samples": ["5", 0],
+      "upscale_method": "bislerp",
+      "scale_by": 1.5
+    }
+  },
+  "7": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": ["1", 0],
+      "positive": ["2", 0],
+      "negative": ["3", 0],
+      "latent_image": ["6", 0],
+      "seed": 8817264,
+      "steps": 18,
+      "cfg": 7.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.45
+    }
+  },
+  "8": {
+    "class_type": "VAEDecode",
+    "inputs": { "samples": ["7", 0], "vae": ["1", 2] }
+  },
+  "9": {
+    "class_type": "SaveImage",
+    "inputs": { "filename_prefix": "dsh_anime_hires", "images": ["8", 0] }
+  }
+}

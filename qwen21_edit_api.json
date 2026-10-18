@@ -1,0 +1,60 @@
+{
+  "1": {
+    "class_type": "UnetLoaderGGUF",
+    "_meta": { "title": "Qwen-Image 2.1 DiT (GGUF Q4_K_M)" },
+    "inputs": { "unet_name": "qwen_image_2.1-Q4_K_M.gguf" }
+  },
+  "2": {
+    "class_type": "CLIPLoader",
+    "_meta": { "title": "Qwen3-VL 8B 文本编码器 (官方 W4A8)" },
+    "inputs": { "clip_name": "qwen3vl_8b_w4a8.safetensors", "type": "qwen_image" }
+  },
+  "3": {
+    "class_type": "VAELoader",
+    "_meta": { "title": "Qwen-Image 2.1 VAE (RGBA)" },
+    "inputs": { "vae_name": "qwen_image_2.1_vae_bf16.safetensors" }
+  },
+  "4": {
+    "class_type": "LoadImage",
+    "_meta": { "title": "载入待改图（DSH 注入源图）" },
+    "inputs": { "image": "{{image}}" }
+  },
+  "5": {
+    "class_type": "TextEncodeQwenImage21",
+    "_meta": { "title": "2.1 编码器：提示词 + 参考图（输出正/负/空 latent）" },
+    "inputs": {
+      "clip": ["2", 0],
+      "prompt": "{{prompt}}",
+      "negative_prompt": "",
+      "resolution": 1024,
+      "vae": ["3", 0],
+      "images.image_1": ["4", 0]
+    }
+  },
+  "6": {
+    "class_type": "KSampler",
+    "_meta": { "title": "采样（官方 cfg=1 / euler / simple）" },
+    "inputs": {
+      "model": ["1", 0],
+      "positive": ["5", 0],
+      "negative": ["5", 1],
+      "latent_image": ["5", 2],
+      "seed": "{{seed}}",
+      "steps": 20,
+      "cfg": 1.0,
+      "sampler_name": "euler",
+      "scheduler": "simple",
+      "denoise": 1.0
+    }
+  },
+  "7": {
+    "class_type": "VAEDecode",
+    "_meta": { "title": "解码" },
+    "inputs": { "samples": ["6", 0], "vae": ["3", 0] }
+  },
+  "8": {
+    "class_type": "SaveImage",
+    "_meta": { "title": "保存结果" },
+    "inputs": { "images": ["7", 0], "filename_prefix": "Qwen21Edit" }
+  }
+}

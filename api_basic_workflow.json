@@ -1,0 +1,107 @@
+{
+  "8": {
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAEDecode"
+    },
+    "inputs": {
+      "samples": [
+        "3",
+        0
+      ],
+      "vae": [
+        "4",
+        2
+      ]
+    }
+  },
+  "4": {
+    "class_type": "CheckpointLoaderSimple",
+    "_meta": {
+      "title": "CheckpointLoaderSimple"
+    },
+    "inputs": {
+      "ckpt_name": "SD1.5\\v1-5-pruned-emaonly.safetensors"
+    }
+  },
+  "9": {
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "SaveImage"
+    },
+    "inputs": {
+      "images": [
+        "8",
+        0
+      ],
+      "filename_prefix": "Result"
+    }
+  },
+  "6": {
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Positive)"
+    },
+    "inputs": {
+      "clip": [
+        "4",
+        1
+      ],
+      "text": "a photo of a cat wearing a spacesuit inside a spaceship\n\nhigh resolution, detailed, 4k"
+    }
+  },
+  "7": {
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Negative)"
+    },
+    "inputs": {
+      "clip": [
+        "4",
+        1
+      ],
+      "text": "blurry, illustration"
+    }
+  },
+  "5": {
+    "class_type": "EmptyLatentImage",
+    "_meta": {
+      "title": "EmptyLatentImage"
+    },
+    "inputs": {
+      "width": 512,
+      "height": 512,
+      "batch_size": 1
+    }
+  },
+  "3": {
+    "class_type": "KSampler",
+    "_meta": {
+      "title": "KSampler"
+    },
+    "inputs": {
+      "model": [
+        "4",
+        0
+      ],
+      "positive": [
+        "6",
+        0
+      ],
+      "negative": [
+        "7",
+        0
+      ],
+      "latent_image": [
+        "5",
+        0
+      ],
+      "seed": 636250194499614,
+      "steps": 20,
+      "cfg": 7,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1
+    }
+  }
+}
